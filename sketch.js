@@ -35,11 +35,26 @@ function initializeElements() {
     restartButton.addEventListener('click', restartGame);
 }
 
+// 口の開き具合の閾値
+const MOUTH_OPEN_THRESHOLD = 30;
+
+// 2点間の距離を計算
+function dist(x1, y1, x2, y2) {
+    return Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
+}
+
+// 口が開いているかどうかを判定
+function isMouthOpen(mouth) {
+    const top = mouth[13];    // 上唇中央
+    const bottom = mouth[19]; // 下唇中央
+    const d = dist(top.x, top.y, bottom.x, bottom.y);
+    return d > MOUTH_OPEN_THRESHOLD;
+}
+
 async function loadFaceAPI() {
     try {
         await faceapi.nets.tinyFaceDetector.loadFromUri('models/tiny_face_detector');
         await faceapi.nets.faceLandmark68Net.loadFromUri('models/face_landmark_68');
-        await faceapi.nets.faceExpressionNet.loadFromUri('models/face_expression');
         await startVideo();
         startButton.disabled = false;
         messageEl.textContent = "スタートボタンを押してください。";
@@ -69,12 +84,13 @@ async function detectExpressions() {
 
     const detections = await faceapi
         .detectAllFaces(video, new faceapi.TinyFaceDetectorOptions())
-        .withFaceLandmarks()
-        .withFaceExpressions();
+        .withFaceLandmarks();
 
     if (detections.length > 0) {
-        const expressions = detections[0].expressions;
-        if (expressions.happy > 0.7) {
+        const landmarks = detections[0].landmarks;
+        const mouth = landmarks.getMouth();
+
+        if (isMouthOpen(mouth)) {
             winGame();
         }
     }
