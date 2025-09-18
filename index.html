@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>お疲れ！乾杯ゲーム</title>
+    <link rel="stylesheet" href="style.css" />
+    <script src="https://cdn.jsdelivr.net/npm/p5@1.11.4/lib/p5.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/p5@1.11.4/lib/addons/p5.sound.min.js"></script>
+    <script src="https://p5play.org/v3/planck.min.js"></script>
+    <script src="https://p5play.org/v3/p5play.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/face-api.js@0.22.2/dist/face-api.min.js"></script>
+    <script src="sketch.js"></script>
+  </head>
+  <body>
+    <div class="container">
+      <h1>お疲れ！乾杯ゲーム</h1>
+      <div class="character-container">
+        <img id="salaryman" src="assets/salaryman.png" alt="サラリーマン" />
+        <div class="speech-bubble">
+          <div id="message">準備中...</div>
+          <div id="countdown" style="display: none">3</div>
+          <div id="result" style="display: none">
+            <h2>クリア！</h2>
+            <p>お疲れ様でした！</p>
+          </div>
+        </div>
+      </div>
+      <video id="video" width="720" height="560" autoplay muted></video>
+      <canvas id="canvas" width="720" height="560"></canvas>
+      <div class="button-container">
+        <button id="startButton">スタート</button>
+        <button id="restartButton" style="display: none">もう一度プレイ</button>
+      </div>
+    </div>
+  </body>
+</html>

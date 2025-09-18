@@ -1,0 +1,139 @@
+let video;
+let canvas;
+let displaySize;
+let isGameStarted = false;
+let isCounting = false;
+let isGameOver = false;
+
+// ゲーム開始時のメッセージとカウントダウン
+const startMessage = "今日もお疲れ様！せーので祝杯をあげよう！";
+const countdownTime = 3;
+
+// DOM要素
+let messageEl;
+let countdownEl;
+let startButton;
+let restartButton;
+let resultEl;
+
+// 音声ファイル
+let winSound;
+
+// DOM要素の初期化
+function initializeElements() {
+    messageEl = document.getElementById('message');
+    countdownEl = document.getElementById('countdown');
+    startButton = document.getElementById('startButton');
+    restartButton = document.getElementById('restartButton');
+    resultEl = document.getElementById('result');
+
+    // 音声ファイルの初期化
+    winSound = new Audio('assets/winsound.mp3');
+
+    // イベントリスナーの設定
+    startButton.addEventListener('click', startGame);
+    restartButton.addEventListener('click', restartGame);
+}
+
+async function loadFaceAPI() {
+    try {
+        await faceapi.nets.tinyFaceDetector.loadFromUri('models/tiny_face_detector');
+        await faceapi.nets.faceLandmark68Net.loadFromUri('models/face_landmark_68');
+        await faceapi.nets.faceExpressionNet.loadFromUri('models/face_expression');
+        await startVideo();
+        startButton.disabled = false;
+        messageEl.textContent = "スタートボタンを押してください。";
+    } catch (err) {
+        console.error("顔認識モデルの読み込みに失敗しました:", err);
+        messageEl.textContent = "顔認識モデルの読み込みに失敗しました。";
+    }
+}
+
+async function startVideo() {
+    video = document.getElementById('video');
+    canvas = document.getElementById('canvas');
+
+    try {
+        const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+        video.srcObject = stream;
+        displaySize = { width: video.width, height: video.height };
+        faceapi.matchDimensions(canvas, displaySize);
+    } catch (err) {
+        console.error("カメラの起動に失敗しました:", err);
+        messageEl.textContent = "カメラの起動に失敗しました。";
+    }
+}
+
+async function detectExpressions() {
+    if (!isGameStarted || isGameOver) return;
+
+    const detections = await faceapi
+        .detectAllFaces(video, new faceapi.TinyFaceDetectorOptions())
+        .withFaceLandmarks()
+        .withFaceExpressions();
+
+    if (detections.length > 0) {
+        const expressions = detections[0].expressions;
+        if (expressions.happy > 0.7) {
+            winGame();
+        }
+    }
+
+    if (!isGameOver) {
+        requestAnimationFrame(detectExpressions);
+    }
+}
+
+function startGame() {
+    startButton.style.display = 'none';
+    messageEl.textContent = startMessage;
+
+    setTimeout(() => {
+        startCountdown();
+    }, 2000);
+}
+
+function startCountdown() {
+    isCounting = true;
+    countdownEl.style.display = 'block';
+    let count = countdownTime;
+
+    const countInterval = setInterval(() => {
+        count--;
+        countdownEl.textContent = count;
+
+        if (count === 0) {
+            clearInterval(countInterval);
+            countdownEl.style.display = 'none';
+            messageEl.textContent = "笑顔で乾杯！";
+            isGameStarted = true;
+            detectExpressions();
+        }
+    }, 1000);
+}
+
+function winGame() {
+    isGameOver = true;
+    winSound.play();
+    messageEl.style.display = 'none';
+    resultEl.style.display = 'block';
+    restartButton.style.display = 'block';
+}
+
+function restartGame() {
+    isGameStarted = false;
+    isGameOver = false;
+    resultEl.style.display = 'none';
+    messageEl.style.display = 'block';
+    restartButton.style.display = 'none';
+    startButton.style.display = 'block';
+    messageEl.textContent = "準備完了！スタートボタンを押してください。";
+}
+
+// DOMContentLoaded イベントリスナー
+document.addEventListener('DOMContentLoaded', () => {
+    initializeElements();
+    startButton.disabled = true;
+    messageEl.textContent = "顔認識モデルを読み込み中...";
+    loadFaceAPI();
+});
