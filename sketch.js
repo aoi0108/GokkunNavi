@@ -4,6 +4,7 @@ let displaySize;
 let isGameStarted = false;
 let isCounting = false;
 let isGameOver = false;
+let mouthOpenStartTime = null;
 
 // ゲーム開始時のメッセージとカウントダウン
 const startMessage = "今日もお疲れ様！せーので祝杯をあげよう！";
@@ -91,8 +92,17 @@ async function detectExpressions() {
         const mouth = landmarks.getMouth();
 
         if (isMouthOpen(mouth)) {
-            winGame();
+            if (!mouthOpenStartTime) {
+                mouthOpenStartTime = Date.now();
+            } else if (Date.now() - mouthOpenStartTime > 500) { // 0.5秒以上
+                winGame();
+                return;
+            }
+        } else {
+            mouthOpenStartTime = null;
         }
+    } else {
+        mouthOpenStartTime = null;
     }
 
     if (!isGameOver) {
@@ -139,6 +149,7 @@ function winGame() {
 function restartGame() {
     isGameStarted = false;
     isGameOver = false;
+    mouthOpenStartTime = null;
     resultEl.style.display = 'none';
     messageEl.style.display = 'block';
     restartButton.style.display = 'none';
