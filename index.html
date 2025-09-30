@@ -1,141 +1,103 @@
 <!DOCTYPE html>
 <html lang="ja">
-  <head>
+<head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>お疲れ！乾杯ゲーム</title>
+    <title>ミニゲーム集</title>
     <link rel="stylesheet" href="style.css" />
     <script src="https://cdn.jsdelivr.net/npm/p5@1.11.4/lib/p5.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/p5@1.11.4/lib/addons/p5.sound.min.js"></script>
     <script src="https://p5play.org/v3/planck.min.js"></script>
     <script src="https://p5play.org/v3/p5play.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/face-api.js@0.22.2/dist/face-api.min.js"></script>
-  </head>
-  <body>
+</head>
+<body>
     <div class="container">
-      <h1>ミニゲーム集</h1>
+        <div id="menuView" class="view">
+            <h1>ミニゲーム集</h1>
+            <p>遊びたいゲームを選んでください</p>
+            <div class="menu-buttons">
+                <button id="btnCheer">お疲れ！乾杯ゲーム</button>
+                <button id="btnWorld">世界滅亡の危機を救え！</button>
+                <button id="btnBattle">バトルゲーム</button>
+            </div>
+        </div>
 
-      <!-- Main Menu -->
-      <div id="mainMenu" class="view">
-        <p>遊びたいゲームを選んでください</p>
-        <div class="menu-buttons">
-          <button id="btnCheer">お疲れ！乾杯ゲーム</button>
-          <button id="btnWorld">世界滅亡の危機を救え！</button>
-          <button id="btnBattle">バトルゲーム</button>
-        </div>
-      </div>
-
-      <!-- Cheers Game View -->
-      <div id="cheersView" class="view" style="display: none">
-        <h2>お疲れ！乾杯ゲーム</h2>
-        <div class="character-container">
-          <img id="salaryman" src="assets/salaryman.png" alt="サラリーマン" />
-          <div class="speech-bubble">
-            <div id="message">準備中...</div>
-            <div id="countdown" class="countdown" style="display: none">3</div>
-            <div id="result" style="display: none">
-              <h2>クリア！</h2>
-              <p>お疲れ様でした！</p>
+        <div id="cheersView" class="view" style="display: none">
+            <h2>お疲れ！乾杯ゲーム</h2>
+            <div class="character-container">
+                <img id="salaryman" src="assets/salaryman.png" alt="サラリーマン" />
+                <div class="speech-bubble">
+                    <div id="cheersMessage">準備中...</div>
+                    <div id="cheersCountdown" class="countdown" style="display: none">3</div>
+                    <div id="cheersResult" style="display: none">
+                        <h2>クリア！</h2>
+                        <p>お疲れ様でした！</p>
+                    </div>
+                </div>
             </div>
-          </div>
-        </div>
-        <!-- video/canvas moved to global area so all games can use camera -->
-        <video
-          id="video"
-          width="640"
-          height="360"
-          autoplay
-          muted
-          style="margin-top: 12px"
-        ></video>
-        <div class="button-container">
-          <button id="startButton">スタート</button>
-          <button id="restartButton" style="display: none">
-            もう一度プレイ
-          </button>
-          <button id="backFromCheers">メニューに戻る</button>
-        </div>
-      </div>
-
-      <!-- World Save Game View -->
-      <div id="worldView" class="view" style="display: none">
-        <h2>世界滅亡の危機を救え！</h2>
-        <div class="world-top">
-          <img
-            id="bossImage"
-            src="assets/lastboss.png"
-            alt="boss"
-            class="boss-image"
-          />
-          <div class="speech-bubble">
-            <div id="worldMessage">
-              薬を飲む準備ができたら、スタートボタンを押すんだ。
-            </div>
-            <div id="worldCountdown" class="countdown" style="display: none">
-              3
-            </div>
-            <div id="worldResult" style="display: none">
-              <h2>成功！</h2>
-              <p>世界は救われた！</p>
-            </div>
-          </div>
-        </div>
-        <!-- share video/canvas
-             we reuse the same video and canvas elements for simplicity -->
-        <div class="button-container">
-          <button id="worldStartButton">スタート</button>
-          <button id="worldRestartButton" style="display: none">
-            もう一度
-          </button>
-          <button id="backFromWorld">メニューに戻る</button>
-        </div>
-      </div>
-
-      <!-- Battle Game View -->
-      <div id="battleView" class="view" style="display: none">
-        <h2>バトルゲーム</h2>
-        <div class="battle-area">
-          <div class="boss-container">
-            <div class="hp-label">敵のHP</div>
-            <div id="enemyHPBar" class="hp-bar">
-              <div id="enemyHPFill" class="hp-fill"></div>
-            </div>
-            <img
-              id="battleBoss"
-              src="assets/boss.png"
-              alt="boss"
-              class="boss-image"
-            />
-          </div>
-          <div class="battle-ui">
-            <p id="battleMessage">薬を飲めたら口を開けて攻撃を仕掛けよう！</p>
-            <div class="hp-group">
-              <div class="hp-label">あなたのHP</div>
-              <div id="playerHPBar" class="hp-bar">
-                <div id="playerHPFill" class="hp-fill"></div>
-              </div>
-            </div>
+            <div class="media-placeholder"></div>
             <div class="button-container">
-              <button id="drinkButton">スタート</button>
-              <button id="battleRestartButton" style="display: none">
-                もう一度
-              </button>
-              <button id="backFromBattle">メニューに戻る</button>
+                <button id="cheersStartButton">スタート</button>
+                <button id="cheersRestartButton" style="display: none">もう一度プレイ</button>
+                <button class="backToMenu">メニューに戻る</button>
             </div>
-          </div>
         </div>
-      </div>
+
+        <div id="worldView" class="view" style="display: none">
+            <h2>世界滅亡の危機を救え！</h2>
+            <div class="world-top">
+                <img id="bossImage" src="assets/lastboss.png" alt="boss" class="boss-image" />
+                <div class="speech-bubble">
+                    <div id="worldMessage">薬を飲む準備ができたら、スタートボタンを押すんだ。</div>
+                    <div id="worldCountdown" class="countdown" style="display: none">3</div>
+                    <div id="worldResult" style="display: none">
+                        <h2>成功！</h2>
+                        <p>世界は救われた！</p>
+                    </div>
+                </div>
+            </div>
+            <div class="media-placeholder"></div>
+            <div class="button-container">
+                <button id="worldStartButton">スタート</button>
+                <button id="worldRestartButton" style="display: none">もう一度</button>
+                <button class="backToMenu">メニューに戻る</button>
+            </div>
+        </div>
+
+        <div id="battleView" class="view" style="display: none">
+            <h2>バトルゲーム</h2>
+            <div class="battle-area">
+                <div class="boss-container">
+                    <div class="hp-label">敵のHP</div>
+                    <div id="enemyHPBar" class="hp-bar">
+                        <div id="enemyHPFill" class="hp-fill"></div>
+                    </div>
+                    <img id="battleBoss" src="assets/boss.png" alt="boss" class="boss-image" />
+                </div>
+                <div class="battle-ui">
+                    <p id="battleMessage">薬を飲めたら口を開けて攻撃を仕掛けよう！</p>
+                    <div class="hp-group">
+                        <div class="hp-label">あなたのHP</div>
+                        <div id="playerHPBar" class="hp-bar">
+                            <div id="playerHPFill" class="hp-fill"></div>
+                        </div>
+                    </div>
+                    <div class="media-placeholder"></div>
+                    <div class="button-container">
+                        <button id="battleStartButton">スタート</button>
+                        <button id="battleRestartButton" style="display: none">もう一度</button>
+                        <button class="backToMenu">メニューに戻る</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="mediaContainer" style="display: none;">
+            <video id="video" width="640" height="360" autoplay muted></video>
+            <canvas id="canvas" width="640" height="360"></canvas>
+        </div>
     </div>
-    <!-- shared video/canvas for all games -->
-    <!-- <video
-      id="video"
-      width="640"
-      height="360"
-      autoplay
-      muted
-      style="margin-top: 12px"
-    ></video> -->
-    <canvas id="canvas" width="640" height="360" style="display: none"></canvas>
     <script src="sketch.js"></script>
-  </body>
+</body>
 </html>

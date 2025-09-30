@@ -2,7 +2,6 @@ html, body {
     margin: 0;
     padding: 0;
     height: 100vh;
-    /* allow scrolling on very small devices so nothing is clipped */
     overflow: auto;
 }
 
@@ -11,6 +10,7 @@ body {
     justify-content: center;
     align-items: center;
     background-color: #f0f0f0;
+    font-family: sans-serif;
 }
 
 .container {
@@ -26,43 +26,43 @@ body {
     box-shadow: 0 0 10px rgba(0,0,0,0.1);
 }
 
-h1 {
+h1, h2 {
     color: #333;
-    margin-bottom: 20px;
+    margin-top: 0;
+}
+
+#mediaContainer {
+    margin-top: 10px;
+    width: 100%;
+    max-width: 640px; /* オリジナルのビデオ幅に制限 */
+    margin-left: auto;
+    margin-right: auto;
+    height: 30vh; /* 高さを指定 */
+    position: relative;
 }
 
 #video, #canvas {
-    margin-top: 10px;
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
     width: 100%;
-    /* make the video take less vertical space by default so buttons remain visible */
-    max-height: 30vh;
+    height: 100%;
     object-fit: contain;
-    border-radius: 30px;
+    border-radius: 8px;
+    position: absolute;
+    top: 0;
+    left: 0;
 }
 
 #video {
     transform: scaleX(-1);
-    -webkit-transform: scaleX(-1);
 }
 
 #canvas {
-    display: none;
+    background: transparent;
 }
 
-#message {
+.message {
     font-size: 24px;
     margin: 20px 0;
     min-height: 36px;
-}
-
-#countdown {
-    font-size: 72px;
-    font-weight: bold;
-    color: #ff6b6b;
-    margin: 20px 0;
 }
 
 .countdown {
@@ -73,20 +73,18 @@ h1 {
 }
 
 .button-container {
-    margin: 20px 0;
+    margin: 20px 0 0;
     display: flex;
     justify-content: center;
     align-items: center;
-    min-height: 60px;
-    /* allow buttons to wrap on narrow screens so they don't overflow */
+    min-height: 50px;
     flex-wrap: wrap;
-    width: 100%;
+    gap: 10px;
 }
 
 button {
     font-size: 18px;
-    padding: 10px 30px;
-    margin: 10px;
+    padding: 10px 20px;
     border: none;
     border-radius: 5px;
     background-color: #4CAF50;
@@ -95,58 +93,50 @@ button {
     transition: background-color 0.3s;
 }
 
-button:hover {
+button:hover:not(:disabled) {
     background-color: #45a049;
 }
 
-#result {
+button:disabled {
+    background-color: #cccccc;
+    cursor: not-allowed;
+}
+
+.result {
     margin-top: 20px;
     animation: fadeIn 0.5s ease-in;
 }
 
 @keyframes fadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(-10px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
 }
 
-#result h2 {
+.result h2 {
     color: #4CAF50;
     font-size: 36px;
-    margin-bottom: 10px;
     margin: 0;
 }
 
-#result p {
+.result p {
     font-size: 24px;
     color: #666;
     margin: 10px 0;
 }
 
-/* reusable fade-in utility to apply to results in any view */
-.fade-in {
-    animation: fadeIn 0.5s ease-in;
-}
-
-.character-container {
-    position: relative;
+.character-container, .world-top, .battle-area {
     display: flex;
     align-items: center;
+    justify-content: center;
+    gap: 20px;
     margin: 10px 0;
     min-height: 160px;
-    gap: 20px;
 }
 
-#salaryman {
+#salaryman, .boss-image {
     width: 160px;
     height: auto;
     object-fit: contain;
-    margin: 0;
     flex-shrink: 0;
 }
 
@@ -160,45 +150,48 @@ button:hover {
     min-width: 250px;
 }
 
-.speech-bubble:before {
+.speech-bubble:before, .speech-bubble:after {
     content: "";
     position: absolute;
-    left: -20px;
     top: 30px;
     border-style: solid;
+}
+
+.speech-bubble:before {
+    left: -20px;
     border-width: 10px 20px 10px 0;
     border-color: transparent #4CAF50 transparent transparent;
 }
 
 .speech-bubble:after {
-    content: "";
-    position: absolute;
     left: -14px;
-    top: 30px;
-    border-style: solid;
     border-width: 10px 20px 10px 0;
     border-color: transparent #ffffff transparent transparent;
 }
 
-/* Main menu */
 .view { display: none; }
 
-.menu-buttons { display: flex; gap: 12px; justify-content: center; margin: 12px 0; }
-
-.boss-image { width: 220px; height: auto; }
-
-.world-top { display: flex; align-items: center; gap: 20px; justify-content: center; margin: 12px 0; }
-
-.battle-area { display: flex; gap: 20px; align-items: center; justify-content: center; }
+.menu-buttons { display: flex; gap: 12px; justify-content: center; margin: 20px 0; }
 
 .battle-ui { max-width: 360px; }
 
-.hp-bar { width: 300px; height: 24px; background: #ddd; border-radius: 12px; overflow: hidden; margin-bottom: 8px; }
-.hp-fill { width: 100%; height: 100%; background: linear-gradient(90deg,#ff6b6b,#ff3b3b); }
+.hp-bar {
+    width: 100%;
+    max-width: 300px;
+    height: 24px;
+    background: #ddd;
+    border-radius: 12px;
+    overflow: hidden;
+    margin: 4px 0 8px;
+}
 
-.boss-image.small { width: 160px; }
+.hp-fill {
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, #ff6b6b, #ff3b3b);
+    transition: width 600ms ease-in-out;
+}
 
-/* boss container: enemy HP bar sits above the image */
 .boss-container {
     display: flex;
     flex-direction: column;
@@ -206,24 +199,22 @@ button:hover {
     gap: 8px;
 }
 
-/* smooth HP decrease animation */
-.hp-fill {
-    transition: width 600ms ease-in-out;
+@media (max-width: 768px) {
+    .character-container, .world-top, .battle-area {
+        flex-direction: column;
+        min-height: auto;
+    }
+    .speech-bubble:before, .speech-bubble:after { display: none; }
+    #mediaContainer { max-height: 25vh; }
 }
 
-/* Responsive tweaks for small screens */
-@media (max-width: 480px), (max-height: 640px) {
-    #video { max-height: 22vh; }
-    .character-container { min-height: 120px; gap: 12px; }
-    #salaryman { width: 120px; }
-    #message { font-size: 18px; }
+@media (max-width: 480px) {
+    .container { padding: 15px; }
+    h1 { font-size: 24px; }
+    h2 { font-size: 20px; }
+    .message { font-size: 18px; }
     .countdown { font-size: 48px; }
-    button { font-size: 16px; padding: 8px 18px; margin: 6px; }
+    button { font-size: 16px; padding: 8px 15px; }
     .hp-bar { width: 220px; }
+    #mediaContainer { max-height: 22vh; }
 }
-
-@media (min-width: 481px) and (max-width: 768px) {
-    #video { max-height: 26vh; }
-    .countdown { font-size: 56px; }
-}
-
