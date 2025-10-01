@@ -87,14 +87,14 @@ button {
     padding: 10px 20px;
     border: none;
     border-radius: 5px;
-    background-color: #4CAF50;
+    background-color: royalblue;
     color: white;
     cursor: pointer;
     transition: background-color 0.3s;
 }
 
 button:hover:not(:disabled) {
-    background-color: #45a049;
+    background-color: darkblue;
 }
 
 button:disabled {
@@ -113,7 +113,7 @@ button:disabled {
 }
 
 .result h2 {
-    color: #4CAF50;
+    color: royalblue;
     font-size: 36px;
     margin: 0;
 }
@@ -143,7 +143,7 @@ button:disabled {
 .speech-bubble {
     position: relative;
     background: #ffffff;
-    border: 4px solid #4CAF50;
+    border: 4px solid royalblue;
     border-radius: 15px;
     padding: 20px;
     flex-grow: 1;
@@ -160,7 +160,7 @@ button:disabled {
 .speech-bubble:before {
     left: -20px;
     border-width: 10px 20px 10px 0;
-    border-color: transparent #4CAF50 transparent transparent;
+    border-color: transparent royalblue transparent transparent;
 }
 
 .speech-bubble:after {

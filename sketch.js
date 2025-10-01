@@ -95,6 +95,13 @@ document.addEventListener('DOMContentLoaded', () => {
             mouthOpenTime: null,
         };
 
+        if (view === 'cheers') {
+            const izakayaVideo = document.getElementById('izakayaVideo');
+            const characterContainer = document.querySelector('#cheersView .character-container');
+            izakayaVideo.style.display = 'none';
+            characterContainer.style.display = 'flex';
+        }
+
         if (view === 'battle') {
             gameState.playerHP = 100;
             gameState.enemyHP = 100;
@@ -115,11 +122,33 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function getInitialMessage(view) {
         switch (view) {
-            case 'cheers': return "準備ができたらスタートを押してね";
-            case 'world': return "薬を飲む準備ができたら、スタートボタンを押すんだ。";
+            case 'cheers': return "あなたは会社員です。憧れの先輩から飲みに誘われました！\n準備ができたらスタートを押してね！";
+            case 'world': return "あなたは世界の平和を託されたただ一人の勇者。準備ができたら、スタートボタンを押すんだ。";
             case 'battle': return "薬を飲めたら口を開けて攻撃を仕掛けよう！";
             default: return "";
         }
+    }
+
+    function startCheersGame() {
+        const izakayaVideo = document.getElementById('izakayaVideo');
+        const characterContainer = document.querySelector('#cheersView .character-container');
+        const mediaPlaceholder = document.querySelector('#cheersView .media-placeholder');
+        const startButton = document.getElementById('cheersStartButton');
+
+        // Hide character and media placeholder, show and play video
+        characterContainer.style.display = 'none';
+        mediaPlaceholder.style.display = 'none';
+        startButton.style.display = 'none';
+        izakayaVideo.style.display = 'block';
+        izakayaVideo.play();
+
+        // When video ends, start the game
+        izakayaVideo.onended = () => {
+            izakayaVideo.style.display = 'none';
+            characterContainer.style.display = 'flex'; // or 'block' depending on original style
+            mediaPlaceholder.style.display = 'block';
+            startGame('cheers');
+        };
     }
 
     function startGame(view) {
@@ -145,7 +174,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function getActionMessage(view) {
         switch (view) {
-            case 'cheers': return "笑顔で乾杯！";
+            case 'cheers': return "今だ！飲んで！笑顔で乾杯！";
             case 'world': return "ゴゴゴゴゴ...";
             case 'battle': return "口を開けて攻撃！";
             default: return "";
@@ -247,7 +276,7 @@ document.addEventListener('DOMContentLoaded', () => {
             btn.addEventListener('click', () => showView('menu'));
         });
 
-        document.getElementById('cheersStartButton').addEventListener('click', () => startGame('cheers'));
+        document.getElementById('cheersStartButton').addEventListener('click', () => startCheersGame());
         document.getElementById('worldStartButton').addEventListener('click', () => startGame('world'));
         document.getElementById('battleStartButton').addEventListener('click', () => startGame('battle'));
 
