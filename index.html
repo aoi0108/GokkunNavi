@@ -41,7 +41,11 @@
             </div>
           </div>
         </div>
-        <video id="izakayaVideo" src="assets/izakaya.mp4" style="display:none; width: 100%;"></video>
+        <video
+          id="izakayaVideo"
+          src="assets/izakaya.mp4"
+          style="display: none; width: 100%"
+        ></video>
         <div class="media-placeholder"></div>
         <div class="button-container">
           <button id="cheersStartButton">スタート</button>
@@ -54,6 +58,12 @@
 
       <div id="worldView" class="view" style="display: none">
         <h2>世界滅亡の危機を救え！</h2>
+        <video
+          id="intro-video"
+          src="assets/lastbossmovie.mp4"
+          playsinline
+          style="display: none; width: 100%"
+        ></video>
         <div class="world-top">
           <img
             id="bossImage"
@@ -100,7 +110,7 @@
             />
           </div>
           <div class="battle-ui">
-            <p id="battleMessage">薬を飲めたら口を開けて攻撃を仕掛けよう！</p>
+            <p id="battleMessage">薬を飲めたら口を開けて氷攻撃を仕掛けよう！</p>
             <div class="hp-group">
               <div class="hp-label">あなたのHP</div>
               <div id="playerHPBar" class="hp-bar">

@@ -123,8 +123,8 @@ document.addEventListener('DOMContentLoaded', () => {
     function getInitialMessage(view) {
         switch (view) {
             case 'cheers': return "あなたは会社員です。憧れの先輩から飲みに誘われました！\n準備ができたらスタートを押してね！";
-            case 'world': return "あなたは世界の平和を託されたただ一人の勇者。準備ができたら、スタートボタンを押すんだ。";
-            case 'battle': return "薬を飲めたら口を開けて攻撃を仕掛けよう！";
+            case 'world': return "お前は世界の平和を託されたただ一人の勇者。手元の毒薬を飲んで自害しなければこの世界は救われない。準備ができたらスタートボタンを押せ。";
+            case 'battle': return "薬を飲めたら口を開けて氷攻撃を仕掛けよう！";
             default: return "";
         }
     }
@@ -148,6 +148,28 @@ document.addEventListener('DOMContentLoaded', () => {
             characterContainer.style.display = 'flex'; // or 'block' depending on original style
             mediaPlaceholder.style.display = 'block';
             startGame('cheers');
+        };
+    }
+
+    function startWorldGame() {
+        const introVideo = document.getElementById('intro-video');
+        const worldTop = document.querySelector('#worldView .world-top');
+        const mediaPlaceholder = document.querySelector('#worldView .media-placeholder');
+        const startButton = document.getElementById('worldStartButton');
+
+        // Hide elements, show and play video
+        worldTop.style.display = 'none';
+        mediaPlaceholder.style.display = 'none';
+        startButton.style.display = 'none';
+        introVideo.style.display = 'block';
+        introVideo.play();
+
+        // When video ends, start the game
+        introVideo.onended = () => {
+            introVideo.style.display = 'none';
+            worldTop.style.display = 'flex';
+            mediaPlaceholder.style.display = 'block';
+            startGame('world');
         };
     }
 
@@ -175,7 +197,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function getActionMessage(view) {
         switch (view) {
             case 'cheers': return "今だ！飲んで！笑顔で乾杯！";
-            case 'world': return "ゴゴゴゴゴ...";
+            case 'world': return "今だ！毒薬を飲め！！";
             case 'battle': return "口を開けて攻撃！";
             default: return "";
         }
@@ -277,7 +299,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         document.getElementById('cheersStartButton').addEventListener('click', () => startCheersGame());
-        document.getElementById('worldStartButton').addEventListener('click', () => startGame('world'));
+        document.getElementById('worldStartButton').addEventListener('click', () => startWorldGame());
         document.getElementById('battleStartButton').addEventListener('click', () => startGame('battle'));
 
         document.getElementById('cheersRestartButton').addEventListener('click', () => resetGame('cheers'));
