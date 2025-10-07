@@ -1,8 +1,24 @@
 document.addEventListener('DOMContentLoaded', () => {
     // --- 定数とグローバル変数 ---
-    const MOUTH_OPEN_THRESHOLD = 20; // 口の開きの閾値
-    const COUNTDOWN_SECONDS = 3;
-    const MOUTH_OPEN_DURATION_MS = 500; // 口を開け続ける時間
+    const GAME_CONFIG = {
+        MOUTH_OPEN_THRESHOLD: 20,
+        COUNTDOWN_SECONDS: 3,
+        MOUTH_OPEN_DURATION_MS: 500,
+        MESSAGES: {
+            cheers: {
+                initial: "あなたは会社員です。憧れの先輩から飲みに誘われました！\n準備ができたらスタートを押してね！",
+                action: "今だ！飲んで！笑顔で乾杯！"
+            },
+            world: {
+                initial: "お前は世界の平和を託されたただ一人の勇者。手元の毒薬を飲んで自害しなければこの世界は救われない。準備ができたらスタートボタンを押せ。",
+                action: "今だ！毒薬を飲め！！"
+            },
+            battle: {
+                initial: "薬を飲めたら口を開けて氷攻撃を仕掛けよう！",
+                action: "口を開けて攻撃！"
+            }
+        }
+    };
 
     // --- DOM要素 ---
     const video = document.getElementById('video');
@@ -113,20 +129,15 @@ document.addEventListener('DOMContentLoaded', () => {
             document.getElementById('bossImage').src = 'assets/lastboss.png';
         }
 
-        updateMessage(view, getInitialMessage(view));
+        updateMessage(view, getMessage(view, 'initial'));
         updateCountdown(view, '');
         showResult(view, false);
         toggleButtons(view, true);
         stopDetection();
     }
 
-    function getInitialMessage(view) {
-        switch (view) {
-            case 'cheers': return "あなたは会社員です。憧れの先輩から飲みに誘われました！\n準備ができたらスタートを押してね！";
-            case 'world': return "お前は世界の平和を託されたただ一人の勇者。手元の毒薬を飲んで自害しなければこの世界は救われない。準備ができたらスタートボタンを押せ。";
-            case 'battle': return "薬を飲めたら口を開けて氷攻撃を仕掛けよう！";
-            default: return "";
-        }
+    function getMessage(view, type) {
+        return GAME_CONFIG.MESSAGES[view]?.[type] || "";
     }
 
     function startCheersGame() {
@@ -178,7 +189,7 @@ document.addEventListener('DOMContentLoaded', () => {
         toggleButtons(view, false);
         updateMessage(view, "せーので...");
 
-        let count = COUNTDOWN_SECONDS;
+        let count = GAME_CONFIG.COUNTDOWN_SECONDS;
         updateCountdown(view, count);
 
         const countdownInterval = setInterval(() => {
@@ -188,7 +199,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 clearInterval(countdownInterval);
                 updateCountdown(view, '');
                 gameState.isStarted = true;
-                updateMessage(view, getActionMessage(view));
+                updateMessage(view, getMessage(view, 'action'));
                 startDetection();
             }
         }, 1000);
@@ -224,17 +235,15 @@ document.addEventListener('DOMContentLoaded', () => {
         const topLip = mouth[13];
         const bottomLip = mouth[19];
         const distance = Math.hypot(topLip.x - bottomLip.x, topLip.y - bottomLip.y);
-        return distance > MOUTH_OPEN_THRESHOLD;
+        return distance > GAME_CONFIG.MOUTH_OPEN_THRESHOLD;
     }
 
     function handleDetection(isMouthOpen) {
         if (isMouthOpen) {
             if (!gameState.mouthOpenTime) {
                 gameState.mouthOpenTime = Date.now();
-            } else if (Date.now() - gameState.mouthOpenTime > MOUTH_OPEN_DURATION_MS) {
-                if (currentView === 'cheers') winGame('cheers');
-                if (currentView === 'world') winGame('world');
-                if (currentView === 'battle') attackInBattle();
+            } else if (Date.now() - gameState.mouthOpenTime > GAME_CONFIG.MOUTH_OPEN_DURATION_MS) {
+                currentView === 'battle' ? attackInBattle() : winGame(currentView);
             }
         } else {
             gameState.mouthOpenTime = null;
@@ -307,10 +316,33 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('battleRestartButton').addEventListener('click', () => resetGame('battle'));
     }
 
+    // --- チュートリアル制御 ---
+    function showTutorial() {
+        const tutorial = document.getElementById('tutorial');
+        if (tutorial) {
+            tutorial.style.display = 'flex';
+        }
+    }
+
+    function hideTutorial() {
+        const tutorial = document.getElementById('tutorial');
+        if (tutorial) {
+            tutorial.style.display = 'none';
+        }
+    }
+
+
+
     // --- 初期化処理 ---
     async function initialize() {
         document.querySelectorAll('button').forEach(b => b.disabled = true);
         setupEventListeners();
+
+        // チュートリアルのイベントリスナー
+        document.getElementById('closeTutorial').addEventListener('click', hideTutorial);
+
+        // 初回起動時にチュートリアルを表示
+        showTutorial();
         showView('menu');
         await startVideo();
         await loadModels();

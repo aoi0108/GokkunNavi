@@ -20,9 +20,46 @@
           手元に薬と水を用意してゲームを始めてください。
         </p>
         <div class="menu-buttons">
-          <button id="btnCheer">お疲れ！乾杯ゲーム</button>
-          <button id="btnWorld">世界滅亡の危機を救え！</button>
-          <button id="btnBattle">バトルゲーム</button>
+          <div id="btnCheer" class="game-card">
+            <h3>お疲れ！乾杯ゲーム</h3>
+            <p>
+              「せーの」のタイミングでお薬を飲んで、みんなで楽しく乾杯しましょう！笑顔で飲めば成功です。
+            </p>
+          </div>
+          <div id="btnWorld" class="game-card">
+            <h3>世界滅亡の危機を救え！</h3>
+            <p>
+              世界の運命があなたの手に！勇気を出してお薬を飲み、世界の危機を救いましょう。
+            </p>
+          </div>
+          <div id="btnBattle" class="game-card">
+            <h3>バトルゲーム</h3>
+            <p>
+              お薬を飲んでHPを消費し、タイミングよく口を開けて強力な氷の攻撃で敵を倒しましょう！
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- チュートリアル -->
+      <div id="tutorial" class="tutorial-overlay" style="display: none">
+        <div class="tutorial-content">
+          <h3>遊び方</h3>
+          <div class="tutorial-step">
+            <img src="assets/tutorial-camera.png" alt="カメラ許可" />
+            <p>
+              1. カメラの使用を許可してください<br />（顔の認識に使用します）
+            </p>
+          </div>
+          <div class="tutorial-step">
+            <img src="assets/tutorial-prepare.png" alt="準備" />
+            <p>2. お薬と水を手元に用意します</p>
+          </div>
+          <div class="tutorial-step">
+            <img src="assets/tutorial-open.png" alt="口を開ける" />
+            <p>3. お薬を飲んだら、0.5秒以上口を開けます</p>
+          </div>
+          <button id="closeTutorial">理解しました</button>
         </div>
       </div>
 
@@ -132,6 +169,9 @@
       <div id="mediaContainer" style="display: none">
         <video id="video" width="640" height="360" autoplay muted></video>
         <canvas id="canvas" width="640" height="360"></canvas>
+        <div id="mouthIndicator" class="mouth-indicator">
+          口を開いています...
+        </div>
       </div>
     </div>
     <script src="sketch.js"></script>
