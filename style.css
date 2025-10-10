@@ -65,6 +65,18 @@ h1, h2 {
     min-height: 36px;
 }
 
+.battle-message {
+    font-size: 16px;
+    margin: 10px auto 0;
+    text-align: center;
+    padding: 10px 20px;
+    border-radius: 8px;
+    background: #fff5f5;
+    width: fit-content;
+    max-width: 100%;
+    border: 2px solid #ffe0e0;
+}
+
 .countdown {
     font-size: 72px;
     font-weight: bold;

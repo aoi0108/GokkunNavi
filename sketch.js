@@ -6,8 +6,8 @@ document.addEventListener('DOMContentLoaded', () => {
         MOUTH_OPEN_DURATION_MS: 500,
         MESSAGES: {
             cheers: {
-                initial: "あなたは会社員です。憧れの先輩から飲みに誘われました！\n準備ができたらスタートを押してね！",
-                action: "今だ！飲んで！笑顔で乾杯！"
+                initial: "あなたは会社員です。憧れの先輩と飲みにいくことになりました。\n準備ができたらスタートを押してね！",
+                action: "今だ！飲んで！飲めたら笑顔で乾杯しよう！！"
             },
             world: {
                 initial: "お前は世界の平和を託されたただ一人の勇者。手元の毒薬を飲んで自害しなければこの世界は救われない。準備ができたらスタートボタンを押せ。",
@@ -15,7 +15,7 @@ document.addEventListener('DOMContentLoaded', () => {
             },
             battle: {
                 initial: "薬を飲めたら口を開けて氷攻撃を仕掛けよう！",
-                action: "口を開けて攻撃！"
+                action: "今だ！薬を飲み、口を開けて氷攻撃を仕掛けるんだ！"
             }
         }
     };
@@ -184,6 +184,28 @@ document.addEventListener('DOMContentLoaded', () => {
         };
     }
 
+    function startBattleGame() {
+        const battleVideo = document.getElementById('battle-video');
+        const battleArea = document.querySelector('#battleView .battle-area');
+        const mediaPlaceholder = document.querySelector('#battleView .media-placeholder');
+        const startButton = document.getElementById('battleStartButton');
+
+        // Hide elements, show and play video
+        battleArea.style.display = 'none';
+        mediaPlaceholder.style.display = 'none';
+        startButton.style.display = 'none';
+        battleVideo.style.display = 'block';
+        battleVideo.play();
+
+        // When video ends, start the game
+        battleVideo.onended = () => {
+            battleVideo.style.display = 'none';
+            battleArea.style.display = 'flex';
+            mediaPlaceholder.style.display = 'block';
+            startGame('battle');
+        };
+    }
+
     function startGame(view) {
         resetGame(view);
         toggleButtons(view, false);
@@ -205,14 +227,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }, 1000);
     }
 
-    function getActionMessage(view) {
-        switch (view) {
-            case 'cheers': return "今だ！飲んで！笑顔で乾杯！";
-            case 'world': return "今だ！毒薬を飲め！！";
-            case 'battle': return "口を開けて攻撃！";
-            default: return "";
-        }
-    }
 
     function startDetection() {
         if (detectionInterval) return;
@@ -243,7 +257,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (!gameState.mouthOpenTime) {
                 gameState.mouthOpenTime = Date.now();
             } else if (Date.now() - gameState.mouthOpenTime > GAME_CONFIG.MOUTH_OPEN_DURATION_MS) {
-                currentView === 'battle' ? attackInBattle() : winGame(currentView);
+                winGame(currentView);
             }
         } else {
             gameState.mouthOpenTime = null;
@@ -261,8 +275,14 @@ document.addEventListener('DOMContentLoaded', () => {
         winSound.play();
         showResult(view, true);
         updateMessage(view, '');
+
         if (view === 'world') {
             document.getElementById('bossImage').src = 'assets/lastboss2.png';
+        } else if (view === 'battle') {
+            gameState.enemyHP = 0;
+            updateHP('enemy', 0);
+            document.getElementById('battleBoss').src = 'assets/boss2.png';
+            updateMessage('battle', 'クリティカル！敵を倒した！');
         }
     }
 
@@ -275,15 +295,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // --- バトルゲーム専用ロジック ---
-    function attackInBattle() {
-        if (gameState.isOver) return;
-        gameState.enemyHP = 0;
-        updateHP('enemy', 0);
-        document.getElementById('battleBoss').src = 'assets/boss2.png';
-        updateMessage('battle', 'クリティカル！敵を倒した！');
-        winGame('battle');
-    }
-
     function updateBattleState() {
         gameState.playerHP -= 0.5; // 継続ダメージ
         updateHP('player', gameState.playerHP);
@@ -309,7 +320,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         document.getElementById('cheersStartButton').addEventListener('click', () => startCheersGame());
         document.getElementById('worldStartButton').addEventListener('click', () => startWorldGame());
-        document.getElementById('battleStartButton').addEventListener('click', () => startGame('battle'));
+        document.getElementById('battleStartButton').addEventListener('click', () => startBattleGame());
 
         document.getElementById('cheersRestartButton').addEventListener('click', () => resetGame('cheers'));
         document.getElementById('worldRestartButton').addEventListener('click', () => resetGame('world'));

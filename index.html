@@ -35,7 +35,7 @@
           <div id="btnBattle" class="game-card">
             <h3>バトルゲーム</h3>
             <p>
-              お薬を飲んでHPを消費し、タイミングよく口を開けて強力な氷の攻撃で敵を倒しましょう！
+              HPがなくなる前にお薬を飲み、口を開けて強力な氷の攻撃で敵を倒しましょう！
             </p>
           </div>
         </div>
@@ -80,7 +80,7 @@
         </div>
         <video
           id="izakayaVideo"
-          src="assets/izakaya.mp4"
+          src="assets/izakaya2.mp4"
           style="display: none; width: 100%"
         ></video>
         <div class="media-placeholder"></div>
@@ -97,7 +97,7 @@
         <h2>世界滅亡の危機を救え！</h2>
         <video
           id="intro-video"
-          src="assets/lastbossmovie.mp4"
+          src="assets/lastbossmovie2.mp4"
           playsinline
           style="display: none; width: 100%"
         ></video>
@@ -133,6 +133,12 @@
 
       <div id="battleView" class="view" style="display: none">
         <h2>バトルゲーム</h2>
+        <video
+          id="battle-video"
+          src="assets/fireboss2.mp4"
+          playsinline
+          style="display: none; width: 100%"
+        ></video>
         <div class="battle-area">
           <div class="boss-container">
             <div class="hp-label">敵のHP</div>
@@ -147,7 +153,9 @@
             />
           </div>
           <div class="battle-ui">
-            <p id="battleMessage">薬を飲めたら口を開けて氷攻撃を仕掛けよう！</p>
+            <p id="battleMessage" class="battle-message">
+              薬を飲めたら口を開けて氷攻撃を仕掛けよう！
+            </p>
             <div class="hp-group">
               <div class="hp-label">あなたのHP</div>
               <div id="playerHPBar" class="hp-bar">
@@ -155,7 +163,7 @@
               </div>
             </div>
             <div class="media-placeholder"></div>
-            <div class="button-container">
+            <div class="button-container battle-buttons">
               <button id="battleStartButton">スタート</button>
               <button id="battleRestartButton" style="display: none">
                 もう一度
@@ -169,9 +177,6 @@
       <div id="mediaContainer" style="display: none">
         <video id="video" width="640" height="360" autoplay muted></video>
         <canvas id="canvas" width="640" height="360"></canvas>
-        <div id="mouthIndicator" class="mouth-indicator">
-          口を開いています...
-        </div>
       </div>
     </div>
     <script src="sketch.js"></script>
