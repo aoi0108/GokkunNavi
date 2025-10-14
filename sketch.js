@@ -296,7 +296,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- バトルゲーム専用ロジック ---
     function updateBattleState() {
-        gameState.playerHP -= 0.5; // 継続ダメージ
+        gameState.playerHP -= 0.7; // 継続ダメージ
         updateHP('player', gameState.playerHP);
         if (gameState.playerHP <= 0) {
             loseGame('battle');
