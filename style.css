@@ -136,7 +136,7 @@ button:disabled {
     margin: 10px 0;
 }
 
-.character-container, .world-top, .battle-area {
+.character-container, .world-top {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -321,7 +321,75 @@ button:disabled {
     transform-origin: 50% 50%;
 }
 
-.battle-ui { max-width: 360px; }
+/* --- Battle View Styles --- */
+.battle-area {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+    width: 100%;
+    margin: 10px 0;
+}
+
+.hp-label {
+    font-size: 14px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 4px;
+}
+
+.hp-bars {
+    display: flex;
+    justify-content: space-around;
+    width: 100%;
+}
+
+.enemy-hp, .player-hp {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex: 1;
+    padding: 0 10px;
+}
+
+.battle-field {
+    display: flex;
+    justify-content: center;
+    align-items: stretch;
+    gap: 20px;
+    width: 100%;
+}
+
+.battle-field .boss-container {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #f9f9f9;
+    border-radius: 8px;
+    padding: 10px;
+}
+
+.battle-area .media-placeholder {
+    flex: 1;
+    min-height: 240px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #f9f9f9;
+    border-radius: 8px;
+    position: relative;
+    overflow: hidden;
+}
+
+.battle-area .media-placeholder #mediaContainer {
+    height: 100%;
+    width: 100%;
+    margin-top: 0;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
 
 .hp-bar {
     width: 100%;

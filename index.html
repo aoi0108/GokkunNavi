@@ -140,37 +140,41 @@
           style="display: none; width: 100%"
         ></video>
         <div class="battle-area">
-          <div class="boss-container">
-            <div class="hp-label">敵のHP</div>
-            <div id="enemyHPBar" class="hp-bar">
-              <div id="enemyHPFill" class="hp-fill"></div>
+          <div class="hp-bars">
+            <div class="enemy-hp">
+              <div class="hp-label">敵のHP</div>
+              <div id="enemyHPBar" class="hp-bar">
+                <div id="enemyHPFill" class="hp-fill"></div>
+              </div>
             </div>
-            <img
-              id="battleBoss"
-              src="assets/boss.png"
-              alt="boss"
-              class="boss-image"
-            />
-          </div>
-          <div class="battle-ui">
-            <p id="battleMessage" class="battle-message">
-              薬を飲めたら口を開けて氷攻撃を仕掛けよう！
-            </p>
-            <div class="hp-group">
+            <div class="player-hp">
               <div class="hp-label">あなたのHP</div>
               <div id="playerHPBar" class="hp-bar">
                 <div id="playerHPFill" class="hp-fill"></div>
               </div>
             </div>
-            <div class="media-placeholder"></div>
-            <div class="button-container battle-buttons">
-              <button id="battleStartButton">スタート</button>
-              <button id="battleRestartButton" style="display: none">
-                もう一度
-              </button>
-              <button class="backToMenu">メニューに戻る</button>
-            </div>
           </div>
+          <div class="battle-field">
+            <div class="boss-container">
+              <img
+                id="battleBoss"
+                src="assets/boss.png"
+                alt="boss"
+                class="boss-image"
+              />
+            </div>
+            <div class="media-placeholder"></div>
+          </div>
+          <p id="battleMessage" class="battle-message">
+            薬を飲めたら口を開けて氷攻撃を仕掛けよう！
+          </p>
+        </div>
+        <div class="button-container battle-buttons">
+          <button id="battleStartButton">スタート</button>
+          <button id="battleRestartButton" style="display: none">
+            もう一度
+          </button>
+          <button class="backToMenu">メニューに戻る</button>
         </div>
       </div>
 
