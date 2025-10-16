@@ -47,16 +47,19 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     async function startVideo() {
-        try {
-            const stream = await navigator.mediaDevices.getUserMedia({ video: true });
-            video.srcObject = stream;
-            const displaySize = { width: video.width, height: video.height };
+    try {
+        const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+        video.srcObject = stream;
+        // video要素のサイズが確定してからcanvasのサイズを合わせる
+        video.onloadedmetadata = () => {
+            const displaySize = { width: video.clientWidth, height: video.clientHeight };
             faceapi.matchDimensions(canvas, displaySize);
-        } catch (err) {
-            console.error("カメラの起動に失敗しました:", err);
-            updateMessage('cheers', "カメラの起動に失敗しました。");
-        }
+        };
+    } catch (err) {
+        console.error("カメラの起動に失敗しました:", err);
+        updateMessage('cheers', "カメラの起動に失敗しました。");
     }
+}
 
     // --- UI更新関数 ---
     function showView(viewId) {

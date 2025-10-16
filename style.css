@@ -453,4 +453,62 @@ button:disabled {
     #mediaContainer { max-height: 22vh; }
 }
 
+/* --- スマートフォン向けレスポンシブ対応 --- */
 
+@media (max-width: 768px) {
+    .container {
+        width: 100%;
+        height: 100%;
+        border-radius: 0;
+        padding: 10px;
+        box-sizing: border-box; /* paddingを含めて幅・高さを計算 */
+    }
+
+    .menu-buttons {
+        flex-direction: column; /* ボタンを縦積みに */
+        gap: 15px;
+    }
+
+    .game-card {
+        width: 100%; /* カード幅を画面いっぱいに */
+        box-sizing: border-box;
+    }
+
+    .character-container, .world-top {
+        padding: 10px;
+    }
+
+    #salaryman, .boss-image {
+        width: 120px; /* 画像を少し小さく */
+    }
+
+    .speech-bubble {
+        padding: 15px;
+    }
+
+    .battle-field {
+        flex-direction: column;
+    }
+}
+
+@media (max-width: 480px) {
+    h1 { font-size: 22px; }
+    h2 { font-size: 18px; }
+
+    .tutorial-step img {
+        width: 100px;
+        height: 100px;
+    }
+
+    #mediaContainer {
+        height: 25vh; /* 高さを調整 */
+    }
+
+    .button-container {
+        flex-direction: column; /* ボタンを縦積みに */
+    }
+
+    button {
+        width: 80%; /* ボタン幅を統一 */
+    }
+}
