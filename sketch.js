@@ -47,19 +47,19 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     async function startVideo() {
-    try {
-        const stream = await navigator.mediaDevices.getUserMedia({ video: true });
-        video.srcObject = stream;
-        // video要素のサイズが確定してからcanvasのサイズを合わせる
-        video.onloadedmetadata = () => {
-            const displaySize = { width: video.clientWidth, height: video.clientHeight };
-            faceapi.matchDimensions(canvas, displaySize);
-        };
-    } catch (err) {
-        console.error("カメラの起動に失敗しました:", err);
-        updateMessage('cheers', "カメラの起動に失敗しました。");
+        try {
+            const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+            video.srcObject = stream;
+            // video要素のサイズが確定してからcanvasのサイズを合わせる
+            video.onloadedmetadata = () => {
+                const displaySize = { width: video.clientWidth, height: video.clientHeight };
+                faceapi.matchDimensions(canvas, displaySize);
+            };
+        } catch (err) {
+            console.error("カメラの起動に失敗しました:", err);
+            updateMessage('cheers', "カメラの起動に失敗しました。");
+        }
     }
-}
 
     // --- UI更新関数 ---
     function showView(viewId) {
@@ -108,6 +108,13 @@ document.addEventListener('DOMContentLoaded', () => {
     function resetGame(view) {
         if (view === 'menu') return;
 
+        mediaContainer.style.display = 'block';
+
+        const placeholder = document.querySelector(`#${view}View .media-placeholder`);
+        if (placeholder) {
+            placeholder.style.display = 'block';
+        }
+
         gameState = {
             isStarted: false,
             isOver: false,
@@ -115,21 +122,20 @@ document.addEventListener('DOMContentLoaded', () => {
         };
 
         if (view === 'cheers') {
-            const izakayaVideo = document.getElementById('izakayaVideo');
-            const characterContainer = document.querySelector('#cheersView .character-container');
-            izakayaVideo.style.display = 'none';
-            characterContainer.style.display = 'flex';
-        }
-
-        if (view === 'battle') {
+            document.getElementById('izakayaVideo').style.display = 'none';
+            document.querySelector('#cheersView .character-container').style.display = 'flex';
+        } else if (view === 'world') {
+            document.getElementById('intro-video').style.display = 'none';
+            document.querySelector('#worldView .world-top').style.display = 'flex';
+            document.getElementById('bossImage').src = 'assets/lastboss.png';
+        } else if (view === 'battle') {
+            document.getElementById('battle-video').style.display = 'none';
+            document.querySelector('#battleView .battle-area').style.display = 'flex';
             gameState.playerHP = 100;
             gameState.enemyHP = 100;
             updateHP('player', 100);
             updateHP('enemy', 100);
             document.getElementById('battleBoss').src = 'assets/boss.png';
-        }
-        if (view === 'world') {
-            document.getElementById('bossImage').src = 'assets/lastboss.png';
         }
 
         updateMessage(view, getMessage(view, 'initial'));
@@ -271,21 +277,61 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    function showResultAfterVideo(view) {
+        // This function is called AFTER an after-story video plays.
+        document.getElementById(`${view}View`).style.display = 'block';
+        mediaContainer.style.display = 'none'; // Hide camera feed
+
+        showResult(view, true);
+        updateMessage(view, '');
+        toggleButtons(view, false); // Show restart button
+
+        if (view === 'world') {
+            document.getElementById('bossImage').src = 'assets/lastboss2.png';
+        }
+    }
+
+    function playAfterStory(view) {
+        document.getElementById(`${view}View`).style.display = 'none';
+        mediaContainer.style.display = 'none';
+
+        const afterVideoMap = {
+            cheers: document.getElementById('izakayaAfterVideo'),
+            world: document.getElementById('worldAfterVideo')
+        };
+
+        const videoToPlay = afterVideoMap[view];
+
+        if (videoToPlay) {
+            videoToPlay.style.display = 'block';
+            videoToPlay.play();
+            videoToPlay.onended = () => {
+                videoToPlay.style.display = 'none';
+                showResultAfterVideo(view);
+            };
+        } else {
+            showResultAfterVideo(view);
+        }
+    }
+
     function winGame(view) {
         if (gameState.isOver) return;
         gameState.isOver = true;
         stopDetection();
         winSound.play();
-        showResult(view, true);
-        updateMessage(view, '');
 
-        if (view === 'world') {
-            document.getElementById('bossImage').src = 'assets/lastboss2.png';
-        } else if (view === 'battle') {
+        if (view === 'battle') {
+            // For battle, show result directly, keeping camera view.
             gameState.enemyHP = 0;
             updateHP('enemy', 0);
             document.getElementById('battleBoss').src = 'assets/boss2.png';
             updateMessage('battle', 'クリティカル！敵を倒した！');
+            // The battle view doesn't have a specific "Result" div,
+            // but we still need to show the restart button.
+            toggleButtons(view, false);
+        } else {
+            // For other games, play the after-story video
+            playAfterStory(view);
         }
     }
 
@@ -318,7 +364,26 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('btnBattle').addEventListener('click', () => showView('battle'));
 
         document.querySelectorAll('.backToMenu').forEach(btn => {
-            btn.addEventListener('click', () => showView('menu'));
+            btn.addEventListener('click', () => {
+                // Stop, reset, and hide all videos before going to menu
+                const allVideos = [
+                    document.getElementById('izakayaVideo'),
+                    document.getElementById('intro-video'),
+                    document.getElementById('battle-video'),
+                    document.getElementById('izakayaAfterVideo'),
+                    document.getElementById('battleAfterVideo'),
+                    document.getElementById('worldAfterVideo')
+                ];
+                allVideos.forEach(v => {
+                    if (v) {
+                        v.pause();
+                        v.currentTime = 0;
+                        v.load();
+                        v.style.display = 'none';
+                    }
+                });
+                showView('menu');
+            });
         });
 
         document.getElementById('cheersStartButton').addEventListener('click', () => startCheersGame());
