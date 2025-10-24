@@ -453,6 +453,121 @@ button:disabled {
     #mediaContainer { max-height: 22vh; }
 }
 
+/* 縦画面のスマートフォン */
+@media (orientation: portrait) and (max-width: 768px) {
+    /* 必要であれば縦画面特有のスタイルを追加 */
+}
+
+/* 横画面のスマートフォン */
+@media (orientation: landscape) and (max-height: 500px) {
+    html, body {
+        height: 100vh;
+        overflow: hidden; /* スクロールを禁止 */
+    }
+    .container {
+        flex-direction: row;
+        width: 100vw;
+        height: 100vh;
+        max-width: 100vw;
+        max-height: 100vh;
+        padding: 5px;
+        gap: 10px;
+        border-radius: 0;
+    }
+
+    .view {
+        display: flex !important; /* display: block !important; を上書き */
+        flex-direction: row;
+        width: 100%;
+        height: 100%;
+        gap: 10px;
+        align-items: center;
+    }
+
+    #menuView {
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    .menu-buttons {
+        flex-direction: row;
+        flex-wrap: nowrap;
+        overflow-x: auto; /* 横スクロール可能に */
+        padding-bottom: 10px;
+    }
+
+    .game-card {
+        flex: 0 0 200px; /* カードの幅を固定 */
+    }
+
+    /* ゲーム画面のレイアウト調整 */
+    .character-container, .world-top, .battle-area {
+        flex: 3; /* ゲーム表示エリアの比率 */
+        height: 100%;
+        margin: 0;
+        padding: 5px;
+        box-sizing: border-box;
+    }
+    
+    .battle-area {
+        justify-content: space-between;
+    }
+
+    .media-placeholder {
+        flex-grow: 1;
+        width: 100%;
+        height: auto;
+        min-height: 150px; /* 最小高さを確保 */
+    }
+
+    #mediaContainer {
+        height: 100%;
+        width: 100%;
+        max-height: none;
+    }
+
+    .button-container {
+        flex: 1; /* 操作エリアの比率 */
+        flex-direction: column;
+        justify-content: center;
+        height: 100%;
+        margin: 0;
+        gap: 15px;
+    }
+    
+    button {
+        width: 90%;
+    }
+
+    .speech-bubble {
+        font-size: 0.8em;
+        padding: 10px;
+    }
+
+    h1, h2 {
+        font-size: 1.2em;
+        margin-bottom: 10px;
+    }
+    
+    .tutorial-content {
+        flex-direction: row;
+        align-items: flex-start;
+        gap: 15px;
+        max-height: 95vh;
+        max-width: 95vw;
+    }
+
+    .tutorial-step {
+        flex: 1;
+        padding: 10px;
+    }
+    
+    .tutorial-step img {
+        width: 100px;
+        height: 100px;
+    }
+}
+
 /* --- スマートフォン向けレスポンシブ対応 --- */
 
 @media (max-width: 768px) {

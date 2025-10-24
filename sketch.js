@@ -25,7 +25,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const canvas = document.getElementById('canvas');
     const mediaContainer = document.getElementById('mediaContainer');
     const winSound = new Audio('assets/winsound.mp3');
-    const loseSound = new Audio('assets/losesound.mp3');
+    const ganbareSound = new Audio('assets/ganbare.mp3');
 
     // --- ゲーム状態管理 ---
     let currentView = 'menu';
@@ -52,8 +52,7 @@ document.addEventListener('DOMContentLoaded', () => {
             video.srcObject = stream;
             // video要素のサイズが確定してからcanvasのサイズを合わせる
             video.onloadedmetadata = () => {
-                const displaySize = { width: video.clientWidth, height: video.clientHeight };
-                faceapi.matchDimensions(canvas, displaySize);
+                handleResize();
             };
         } catch (err) {
             console.error("カメラの起動に失敗しました:", err);
@@ -66,7 +65,13 @@ document.addEventListener('DOMContentLoaded', () => {
         currentView = viewId;
         document.querySelectorAll('.view').forEach(v => v.style.display = 'none');
         const activeView = document.getElementById(`${viewId}View`);
-        activeView.style.display = 'block';
+
+        // メディアクエリに合致するかどうかでdisplayプロパティを決定
+        if (window.matchMedia("(orientation: landscape) and (max-height: 500px)").matches && viewId !== 'menu') {
+            activeView.style.display = 'flex';
+        } else {
+            activeView.style.display = 'block';
+        }
 
         if (viewId === 'menu') {
             mediaContainer.style.display = 'none';
@@ -77,6 +82,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 placeholder.appendChild(mediaContainer);
             }
             mediaContainer.style.display = 'block';
+            // ビューが切り替わった後にリサイズ処理を呼び出す
+            setTimeout(handleResize, 50);
         }
         resetGame(viewId); // ビューが変更されたらゲームをリセット
     }
@@ -279,7 +286,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function showResultAfterVideo(view) {
         // This function is called AFTER an after-story video plays.
-        document.getElementById(`${view}View`).style.display = 'block';
+        const viewElement = document.getElementById(`${view}View`);
+        if (window.matchMedia("(orientation: landscape) and (max-height: 500px)").matches) {
+            viewElement.style.display = 'flex';
+        } else {
+            viewElement.style.display = 'block';
+        }
         mediaContainer.style.display = 'none'; // Hide camera feed
 
         showResult(view, true);
@@ -390,9 +402,9 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('worldStartButton').addEventListener('click', () => startWorldGame());
         document.getElementById('battleStartButton').addEventListener('click', () => startBattleGame());
 
-        document.getElementById('cheersRestartButton').addEventListener('click', () => resetGame('cheers'));
-        document.getElementById('worldRestartButton').addEventListener('click', () => resetGame('world'));
-        document.getElementById('battleRestartButton').addEventListener('click', () => resetGame('battle'));
+        document.getElementById('cheersRestartButton').addEventListener('click', () => { ganbareSound.play(); startGame('cheers'); });
+        document.getElementById('worldRestartButton').addEventListener('click', () => { ganbareSound.play(); startGame('world'); });
+        document.getElementById('battleRestartButton').addEventListener('click', () => { ganbareSound.play(); startGame('battle'); });
     }
 
     // --- チュートリアル制御 ---
@@ -410,7 +422,19 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-
+    // --- ウィンドウリサイズ対応 ---
+    function handleResize() {
+        const placeholder = mediaContainer.parentElement;
+        if (mediaContainer.style.display !== 'none' && placeholder && placeholder.offsetParent) {
+            const displaySize = {
+                width: placeholder.clientWidth,
+                height: placeholder.clientHeight
+            };
+            if (displaySize.width > 0 && displaySize.height > 0) {
+                faceapi.matchDimensions(canvas, displaySize);
+            }
+        }
+    }
 
     // --- 初期化処理 ---
     async function initialize() {
@@ -419,6 +443,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // チュートリアルのイベントリスナー
         document.getElementById('closeTutorial').addEventListener('click', hideTutorial);
+
+        // リサイズイベントリスナー
+        window.addEventListener('resize', handleResize);
 
         // 初回起動時にチュートリアルを表示
         showTutorial();
