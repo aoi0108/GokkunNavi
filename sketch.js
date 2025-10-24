@@ -25,7 +25,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const canvas = document.getElementById('canvas');
     const mediaContainer = document.getElementById('mediaContainer');
     const winSound = new Audio('assets/winsound.mp3');
-    const loseSound = new Audio('assets/losesound.mp3');
+    const ganbareSound = new Audio('assets/ganbare.mp3');
 
     // --- ゲーム状態管理 ---
     let currentView = 'menu';
@@ -65,12 +65,12 @@ document.addEventListener('DOMContentLoaded', () => {
         currentView = viewId;
         document.querySelectorAll('.view').forEach(v => v.style.display = 'none');
         const activeView = document.getElementById(`${viewId}View`);
-        
+
         // メディアクエリに合致するかどうかでdisplayプロパティを決定
         if (window.matchMedia("(orientation: landscape) and (max-height: 500px)").matches && viewId !== 'menu') {
-             activeView.style.display = 'flex';
+            activeView.style.display = 'flex';
         } else {
-             activeView.style.display = 'block';
+            activeView.style.display = 'block';
         }
 
         if (viewId === 'menu') {
@@ -288,9 +288,9 @@ document.addEventListener('DOMContentLoaded', () => {
         // This function is called AFTER an after-story video plays.
         const viewElement = document.getElementById(`${view}View`);
         if (window.matchMedia("(orientation: landscape) and (max-height: 500px)").matches) {
-             viewElement.style.display = 'flex';
+            viewElement.style.display = 'flex';
         } else {
-             viewElement.style.display = 'block';
+            viewElement.style.display = 'block';
         }
         mediaContainer.style.display = 'none'; // Hide camera feed
 
@@ -402,9 +402,9 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('worldStartButton').addEventListener('click', () => startWorldGame());
         document.getElementById('battleStartButton').addEventListener('click', () => startBattleGame());
 
-        document.getElementById('cheersRestartButton').addEventListener('click', () => resetGame('cheers'));
-        document.getElementById('worldRestartButton').addEventListener('click', () => resetGame('world'));
-        document.getElementById('battleRestartButton').addEventListener('click', () => resetGame('battle'));
+        document.getElementById('cheersRestartButton').addEventListener('click', () => { ganbareSound.play(); startGame('cheers'); });
+        document.getElementById('worldRestartButton').addEventListener('click', () => { ganbareSound.play(); startGame('world'); });
+        document.getElementById('battleRestartButton').addEventListener('click', () => { ganbareSound.play(); startGame('battle'); });
     }
 
     // --- チュートリアル制御 ---
@@ -443,7 +443,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // チュートリアルのイベントリスナー
         document.getElementById('closeTutorial').addEventListener('click', hideTutorial);
-        
+
         // リサイズイベントリスナー
         window.addEventListener('resize', handleResize);
 
