@@ -9,13 +9,26 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: #f0f0f0;
+    background-color: #000;
     font-family: sans-serif;
+}
+
+#bg-video {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    min-width: 100%;
+    min-height: 100%;
+    width: auto;
+    height: auto;
+    z-index: -1;
+    object-fit: cover;
 }
 
 .container {
     text-align: center;
-    background: white;
+    background: rgba(255, 255, 255, 0.8);
     padding: 20px;
     border-radius: 10px;
     max-height: 95vh;
