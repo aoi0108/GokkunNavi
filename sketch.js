@@ -7,14 +7,14 @@ document.addEventListener('DOMContentLoaded', () => {
         MESSAGES: {
             cheers: {
                 initial: "あなたは会社員です。憧れの先輩と飲みにいくことになりました。\n準備ができたらスタートを押してね！",
-                action: "今だ！飲んで！飲めたら笑顔で乾杯しよう！！"
+                action: "今だ！飲んで！飲めたら口を開けて笑顔で乾杯するんだ！"
             },
             world: {
-                initial: "お前は世界の平和を託されたただ一人の勇者。手元の毒薬を飲んで自害しなければこの世界は救われない。準備ができたらスタートボタンを押せ。",
-                action: "今だ！毒薬を飲め！！"
+                initial: "お前は世界の平和を託されたただ一人の勇者。手元の毒薬を飲んで自害しなければこの世界は救われない。準備ができたらスタートボタンを押すんだ。",
+                action: "今だ！毒薬を飲め！！飲めたら口を開けるんだ！"
             },
             battle: {
-                initial: "薬を飲めたら口を開けて氷攻撃を仕掛けよう！",
+                initial: "手元に薬と水を用意してスタートボタンを押そう！",
                 action: "今だ！薬を飲み、口を開けて氷攻撃を仕掛けるんだ！"
             }
         }
@@ -134,7 +134,7 @@ document.addEventListener('DOMContentLoaded', () => {
         } else if (view === 'world') {
             document.getElementById('intro-video').style.display = 'none';
             document.querySelector('#worldView .world-top').style.display = 'flex';
-            document.getElementById('bossImage').src = 'assets/lastboss.png';
+            document.getElementById('bossImage').src = 'assets/king.png';
         } else if (view === 'battle') {
             document.getElementById('battle-video').style.display = 'none';
             document.querySelector('#battleView .battle-area').style.display = 'flex';
