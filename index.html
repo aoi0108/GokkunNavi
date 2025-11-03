@@ -17,6 +17,7 @@
     <link rel="apple-touch-icon" href="assets/icon.png" />
     <!-- PWA for android -->
     <link rel="manifest" href="manifest.json" />
+    <link rel="icon" href="assets/icon.png">
   </head>
   <body>
     <video
@@ -36,22 +37,31 @@
         </p>
         <div class="menu-buttons">
           <div id="btnCheer" class="game-card">
-            <h3>お疲れ！乾杯ゲーム</h3>
-            <p>
-              乾杯のタイミングでお薬を飲んで、みんなで楽しく盛り上がりましょう！笑顔で飲めば成功です。
-            </p>
+            <img src="assets/salaryman.png" alt="乾杯ゲーム" class="game-icon">
+            <div class="game-card-content">
+              <h3>お疲れ！乾杯ゲーム</h3>
+              <p>
+                乾杯のタイミングでお薬を飲んで、みんなで楽しく盛り上がりましょう！笑顔で飲めば成功です。
+              </p>
+            </div>
           </div>
           <div id="btnWorld" class="game-card">
-            <h3>世界滅亡の危機を救え！</h3>
-            <p>
-              世界の運命があなたの手に！勇気を出してお薬を飲み、世界の危機を救いましょう。
-            </p>
+            <img src="assets/king.png" alt="世界滅亡" class="game-icon">
+            <div class="game-card-content">
+              <h3>世界滅亡の危機を救え！</h3>
+              <p>
+                世界の運命があなたの手に！勇気を出してお薬を飲み、世界の危機を救いましょう。
+              </p>
+            </div>
           </div>
           <div id="btnBattle" class="game-card">
-            <h3>バトルゲーム</h3>
-            <p>
-              HPがなくなる前にお薬を飲み、口を開けて強力な氷の攻撃で敵を倒しましょう！
-            </p>
+            <img src="assets/boss.png" alt="バトル" class="game-icon">
+            <div class="game-card-content">
+              <h3>バトルゲーム</h3>
+              <p>
+                HPがなくなる前にお薬を飲み、口を開けて強力な氷の攻撃で敵を倒しましょう！
+              </p>
+            </div>
           </div>
         </div>
       </div>
@@ -62,9 +72,7 @@
           <h3>遊び方</h3>
           <div class="tutorial-step">
             <img src="assets/tutorial-camera.png" alt="カメラ許可" />
-            <p>
-              1. カメラの使用を許可してください<br />（顔の認識に使用します）
-            </p>
+            <p>1. カメラの使用を許可してください（顔の認識に使用します）</p>
           </div>
           <div class="tutorial-step">
             <img src="assets/tutorial-prepare.png" alt="準備" />
@@ -76,7 +84,7 @@
           </div>
           <div class="tutorial-step">
             <img src="assets/tutorial-open.png" alt="口を開ける" />
-            <p>4. ゲームの説明に従い、お薬を飲んだ後は0.5秒以上口を開けます</p>
+            <p>4. ゲームの説明に従い、お薬を飲んだ後は口を開けます</p>
           </div>
           <button id="closeTutorial">理解しました</button>
         </div>
