@@ -225,7 +225,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function startGame(view) {
         resetGame(view);
         toggleButtons(view, false);
-        updateMessage(view, "せーので...");
+        updateMessage(view, "今のうちに水と薬を口に含んで...");
 
         let count = GAME_CONFIG.COUNTDOWN_SECONDS;
         updateCountdown(view, count);
