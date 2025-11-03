@@ -84,10 +84,10 @@ h1, h2 {
     text-align: center;
     padding: 10px 20px;
     border-radius: 8px;
-    background: #fff5f5;
+    background: rgba(65,65,98,0.3);
     width: fit-content;
     max-width: 100%;
-    border: 2px solid #ffe0e0;
+    /* border: 2px solid #ffe0e0; */
 }
 
 .countdown {
@@ -95,6 +95,7 @@ h1, h2 {
     font-weight: bold;
     color: #ff6b6b;
     margin: 20px 0;
+    text-align: center;
 }
 
 .button-container {
