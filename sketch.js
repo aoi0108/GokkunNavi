@@ -10,12 +10,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 action: "今だ！飲んで！飲めたら口を開けて笑顔で乾杯するんだ！"
             },
             world: {
-                initial: "お前は世界の平和を託されたただ一人の勇者。手元の毒薬を飲んで自害しなければこの世界は救われない。準備ができたらスタートボタンを押すんだ。",
-                action: "今だ！毒薬を飲め！！飲めたら口を開けるんだ！"
+                initial: "お前は世界の平和を託された唯一の勇者。\n体内に宿る滅亡の因子を打ち消すため、お前の命と引き換えに世界を救う「魂の解毒剤」を今すぐ飲まなければならない。\nお前の決断が、世界の運命を決める。\n準備ができたら、スタートボタンを押したまえ！",
+                action: "今だ！解毒剤を飲め！！飲めたら口を開けるんだ！"
             },
             battle: {
                 initial: "手元に薬と水を用意してスタートボタンを押そう！",
-                action: "今だ！薬を飲み、口を開けて氷攻撃を仕掛けるんだ！"
+                action: "今だ！魔法の薬を飲み、口を開けて氷攻撃を仕掛けるんだ！"
             }
         }
     };
@@ -90,7 +90,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function updateMessage(view, text) {
         const el = document.getElementById(`${view}Message`);
-        if (el) el.textContent = text;
+        if (el) el.innerHTML = text.replace(/\n/g, '<br>');
     }
 
     function updateCountdown(view, text) {

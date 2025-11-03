@@ -84,7 +84,7 @@ h1, h2 {
     text-align: center;
     padding: 10px 20px;
     border-radius: 8px;
-    background: rgba(98, 65, 65, 0.2);
+    background: #f0ffff;
     width: fit-content;
     max-width: 100%;
     /* border: 2px solid #ffe0e0; */
