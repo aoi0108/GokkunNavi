@@ -58,6 +58,19 @@
               </p>
             </div>
           </div>
+          <div id="btnRomeoJuliet" class="game-card">
+            <img
+              src="assets/romjulie.png"
+              alt="ロミジュリゲーム"
+              class="game-icon"
+            />
+            <div class="game-card-content">
+              <h3>ロミジュリゲーム</h3>
+              <p>
+                禁じられた愛の果てに、彼女はひとつの決断を下す。――これは、愛と勇気が試されるジュリエットの物語。
+              </p>
+            </div>
+          </div>
           <div id="btnBattle" class="game-card">
             <img src="assets/boss.png" alt="バトル" class="game-icon" />
             <div class="game-card-content">
@@ -162,6 +175,50 @@
         </div>
       </div>
 
+      <div id="romeoJulietView" class="view" style="display: none">
+        <h2>ロミジュリゲーム</h2>
+        <video
+          id="romeoJuliet-video"
+          src="assets/romjulie.mp4"
+          playsinline
+          style="display: none; width: 100%"
+        ></video>
+        <div class="world-top">
+          <img
+            id="julietImage"
+            src="assets/romjulie.png"
+            alt="juliet"
+            class="boss-image"
+          />
+          <div class="speech-bubble">
+            <div id="romeoJulietMessage">
+              あなたはジュリエット。愛するロミオと密かに結婚したものの、家の争いにより、別の男性との結婚を命じられています。逃れるための唯一の道は――神父が差し出した“仮死の薬”を飲むこと。42時間の眠りにつけば、再びロミオと会えるはず。手元に水を用意し、深呼吸してください。これは、愛を信じる最後の選択です。
+            </div>
+            <div
+              id="romeoJulietCountdown"
+              class="countdown"
+              style="display: none"
+            >
+              5
+            </div>
+            <div id="romeoJulietResult" style="display: none">
+              <h2>成功！</h2>
+              <p>
+                あなたは静かに眠りについた。だが、ロミオはその真実を知らぬまま、あなたの眠る傍らで命を絶った――。その夜、二人の愛は永遠となった。
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="media-placeholder"></div>
+        <div class="button-container">
+          <button id="romeoJulietStartButton">スタート</button>
+          <button id="romeoJulietRestartButton" style="display: none">
+            もう一度！
+          </button>
+          <button class="backToMenu">メニューに戻る</button>
+        </div>
+      </div>
+
       <div id="battleView" class="view" style="display: none">
         <h2>バトルゲーム</h2>
         <video
@@ -224,6 +281,12 @@
       <video
         id="worldAfterVideo"
         src="assets/lastboss-after.mp4"
+        playsinline
+        style="display: none; width: 100%"
+      ></video>
+      <video
+        id="romeoJulietAfterVideo"
+        src="assets/romjulie-after.mp4"
         playsinline
         style="display: none; width: 100%"
       ></video>

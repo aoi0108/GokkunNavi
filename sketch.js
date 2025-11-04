@@ -16,6 +16,10 @@ document.addEventListener('DOMContentLoaded', () => {
             battle: {
                 initial: "手元に薬と水を用意してスタートボタンを押そう！",
                 action: "今だ！魔法の薬を飲み、口を開けて氷攻撃を仕掛けるんだ！"
+            },
+            romeoJuliet: {
+                initial: "あなたはジュリエット。\n愛するロミオと密かに結婚したものの、家の争いにより、別の男性との結婚を命じられています。逃れるための唯一の道は神父が差し出した“仮死の薬”を飲むこと。42時間の眠りにつけば、再びロミオと会えるはず。手元に水を用意し、深呼吸してください。これは、愛を信じる最後の選択です。",
+                action: "今だ！愛する人のために薬を飲んで、口を開けるんだ！"
             }
         }
     };
@@ -143,6 +147,10 @@ document.addEventListener('DOMContentLoaded', () => {
             updateHP('player', 100);
             updateHP('enemy', 100);
             document.getElementById('battleBoss').src = 'assets/boss.png';
+        } else if (view === 'romeoJuliet') {
+            document.getElementById('romeoJuliet-video').style.display = 'none';
+            document.querySelector('#romeoJulietView .world-top').style.display = 'flex';
+            document.getElementById('julietImage').src = 'assets/romjulie.png';
         }
 
         updateMessage(view, getMessage(view, 'initial'));
@@ -219,6 +227,28 @@ document.addEventListener('DOMContentLoaded', () => {
             battleArea.style.display = 'flex';
             mediaPlaceholder.style.display = 'block';
             startGame('battle');
+        };
+    }
+
+    function startRomeoJulietGame() {
+        const romeoJulietVideo = document.getElementById('romeoJuliet-video');
+        const romeoJulietTop = document.querySelector('#romeoJulietView .world-top');
+        const mediaPlaceholder = document.querySelector('#romeoJulietView .media-placeholder');
+        const startButton = document.getElementById('romeoJulietStartButton');
+
+        // Hide elements, show and play video
+        romeoJulietTop.style.display = 'none';
+        mediaPlaceholder.style.display = 'none';
+        startButton.style.display = 'none';
+        romeoJulietVideo.style.display = 'block';
+        romeoJulietVideo.play();
+
+        // When video ends, start the game
+        romeoJulietVideo.onended = () => {
+            romeoJulietVideo.style.display = 'none';
+            romeoJulietTop.style.display = 'flex';
+            mediaPlaceholder.style.display = 'block';
+            startGame('romeoJuliet');
         };
     }
 
@@ -309,7 +339,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const afterVideoMap = {
             cheers: document.getElementById('izakayaAfterVideo'),
-            world: document.getElementById('worldAfterVideo')
+            world: document.getElementById('worldAfterVideo'),
+            romeoJuliet: document.getElementById('romeoJulietAfterVideo') // 追加
         };
 
         const videoToPlay = afterVideoMap[view];
@@ -373,6 +404,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function setupEventListeners() {
         document.getElementById('btnCheer').addEventListener('click', () => showView('cheers'));
         document.getElementById('btnWorld').addEventListener('click', () => showView('world'));
+        document.getElementById('btnRomeoJuliet').addEventListener('click', () => showView('romeoJuliet')); // 追加
         document.getElementById('btnBattle').addEventListener('click', () => showView('battle'));
 
         document.querySelectorAll('.backToMenu').forEach(btn => {
@@ -400,10 +432,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
         document.getElementById('cheersStartButton').addEventListener('click', () => startCheersGame());
         document.getElementById('worldStartButton').addEventListener('click', () => startWorldGame());
+        document.getElementById('romeoJulietStartButton').addEventListener('click', () => startRomeoJulietGame()); // 追加
         document.getElementById('battleStartButton').addEventListener('click', () => startBattleGame());
 
         document.getElementById('cheersRestartButton').addEventListener('click', () => { ganbareSound.play(); startGame('cheers'); });
         document.getElementById('worldRestartButton').addEventListener('click', () => { ganbareSound.play(); startGame('world'); });
+        document.getElementById('romeoJulietRestartButton').addEventListener('click', () => { ganbareSound.play(); startGame('romeoJuliet'); }); // 追加
         document.getElementById('battleRestartButton').addEventListener('click', () => { ganbareSound.play(); startGame('battle'); });
     }
 
