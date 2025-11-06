@@ -262,10 +262,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const countdownInterval = setInterval(() => {
             count--;
-            updateCountdown(view, count);
-            if (count === 0) {
+            if (count > 0) {
+                updateCountdown(view, count);
+            } else {
                 clearInterval(countdownInterval);
-                updateCountdown(view, '');
+                updateCountdown(view, 'GO!!');
                 gameState.isStarted = true;
                 updateMessage(view, getMessage(view, 'action'));
                 startDetection();
@@ -359,6 +360,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function winGame(view) {
         if (gameState.isOver) return;
+        updateCountdown(view, ''); // GO!表示をクリア
         gameState.isOver = true;
         stopDetection();
         winSound.play();
@@ -416,7 +418,9 @@ document.addEventListener('DOMContentLoaded', () => {
                     document.getElementById('battle-video'),
                     document.getElementById('izakayaAfterVideo'),
                     document.getElementById('battleAfterVideo'),
-                    document.getElementById('worldAfterVideo')
+                    document.getElementById('worldAfterVideo'),
+                    document.getElementById('romeoJuliet-video'), // 追加
+                    document.getElementById('romeoJulietAfterVideo') // 追加
                 ];
                 allVideos.forEach(v => {
                     if (v) {
